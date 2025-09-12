@@ -6,6 +6,7 @@ import { selectCurrentUser, selectIsAuthenticated } from "../redux/authSlice";
 import toast from "react-hot-toast";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
+import BackButton from "../components/BackButton";
 
 const CreatePastePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -140,6 +141,7 @@ const CreatePastePage = () => {
       <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">
         {pasteId ? "Edit Your Paste" : "Create a New Paste"}
       </h1>
+      <BackButton />
       <Formik
         initialValues={formInitialValues}
         validationSchema={validationSchema}

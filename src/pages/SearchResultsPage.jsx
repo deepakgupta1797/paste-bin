@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTheme } from '../components/Layout'; // Assuming useTheme is exported from Layout
-
+import BackButton from '../components/BackButton';
 const SearchResultsPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q');
@@ -67,6 +67,7 @@ const SearchResultsPage = () => {
   if (!query) {
     return (
       <div className={`text-center p-8 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+        <BackButton />
         Please enter a search query in the navbar.
       </div>
     );
@@ -76,6 +77,7 @@ const SearchResultsPage = () => {
 
   return (
     <div className={`container mx-auto px-4 py-8 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
+      <BackButton />
       <h1 className="text-3xl font-bold mb-6">
         Search Results for: <span className={theme === 'dark' ? 'text-indigo-400' : 'text-indigo-600'}>{query}</span>
       </h1>

@@ -91,13 +91,13 @@ const Navbar = () => {
               </Link>
               {isAuthenticated && (
                 <>
-                  <Link
+                  {/* <Link
                     to="/pastes/create"
                     className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
                     onClick={handleMobileLinkClick}
                   >
                     New Paste
-                  </Link>
+                  </Link> */}
                   {currentUser?.role === "admin" && (
                     <Link
                       to="/admin"

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
+import BackButton from "../components/BackButton";
 
 const fetchUsersAPI = async () => {
   return new Promise((resolve) =>
@@ -285,6 +286,7 @@ function Admin({ isUserAdmin, currentAdmin }) {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <BackButton />
       <h1 className="text-3xl font-bold text-gray-800 mb-8">
         Admin Dashboard
         </h1>

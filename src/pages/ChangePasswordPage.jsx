@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { selectCurrentUser } from "../redux/authSlice";
 import toast from "react-hot-toast";
+import BackButton from "../components/BackButton";
 
 const updateUserPasswordAPI = async (userId, currentPassword, newPassword) => {
   console.log(
@@ -38,6 +39,7 @@ const PasswordFieldWithVisibility = ({ name, label, formik }) => {
       <label htmlFor={name} className="block text-sm font-medium text-gray-700">
         {label}
       </label>
+      <BackButton />
       <div className="mt-1 relative rounded-md shadow-sm">
         <input
           id={name}

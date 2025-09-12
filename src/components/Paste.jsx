@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { removeFromPastes } from "../redux/pasteSlice";
 import toast from "react-hot-toast";
 import { selectCurrentUser } from "../redux/authSlice";
+import BackButton from "./BackButton";
 
 const Paste = () => {
   const pastes = useSelector((state) => state.paste.pastes);
@@ -31,6 +32,7 @@ const Paste = () => {
       toast.error("You are not authorized to edit this paste.");
       return;
     }
+          <BackButton />
     navigate(`/pastes/create?pasteId=${pasteId}`);
   };
 
@@ -86,12 +88,16 @@ const Paste = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1
-        className="text-3xl font-bold 
-      text-center text-gray-800 mb-8"
-      >
-        All Pastes
-      </h1>
+      <div className="flex justify-between items-center mb-8">
+        <BackButton />
+        <h1 className="text-3xl font-bold text-gray-800">All Pastes</h1>
+        <button
+          onClick={() => navigate('/pastes/create')}
+          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+        >
+          Create New Paste
+        </button>
+      </div>
       {/* <input
         className="p-3 rounded-lg border-2 border-gray-300
          w-full mb-6 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"

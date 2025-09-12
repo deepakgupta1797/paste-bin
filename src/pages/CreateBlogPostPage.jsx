@@ -6,6 +6,7 @@ import { selectCurrentUser, selectIsAuthenticated } from "../redux/authSlice";
 import toast from "react-hot-toast";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
+import BackButton from "../components/BackButton";
 
 const CreateBlogPostPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -138,6 +139,7 @@ const CreateBlogPostPage = () => {
       <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
         {blogId ? "Edit Your Blog Post" : "Create a New Blog Post"}
       </h1>
+      <BackButton />
       <Formik
         initialValues={formInitialValues}
         validationSchema={validationSchema}

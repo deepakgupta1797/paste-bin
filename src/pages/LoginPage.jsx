@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../redux/authSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import BackButton from "../components/BackButton";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ const LoginPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-10 rounded-xl shadow-lg">
         <div>
+          <BackButton />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-100">
             Sign in to your account
           </h2>
