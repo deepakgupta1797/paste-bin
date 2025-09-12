@@ -2,6 +2,7 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import BackButton from "./BackButton";
 
 const ViewPaste = () => {
   const { id } = useParams();
@@ -55,6 +56,7 @@ const ViewPaste = () => {
 
   return (
    <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-xl max-w-3xl mx-auto">
+    <BackButton />
       <div className="mb-8">
         <label
           htmlFor="view-title"
