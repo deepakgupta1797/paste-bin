@@ -5,18 +5,19 @@ import { useTheme } from '../components/Layout'; // Assuming useTheme is exporte
 import BackButton from '../components/BackButton';
 const SearchResultsPage = () => {
   const [searchParams] = useSearchParams();
-  const query = searchParams.get('q');
+  const debouncedQuery = searchParams.get('q') || '';
   const { theme } = useTheme();
 
   const allPastes = useSelector((state) => state.paste.pastes);
   const allBlogs = useSelector((state) => state.blog.blogs);
 
   const { filteredPastes, filteredBlogs } = useMemo(() => {
-    if (!query) {
-      return { filteredPastes: [], filteredBlogs: [] };
+    if (!debouncedQuery) {
+      // If query is empty, show all data
+      return { filteredPastes: allPastes, filteredBlogs: allBlogs };
     }
 
-    const lowerCaseQuery = query.toLowerCase();
+    const lowerCaseQuery = debouncedQuery.toLowerCase();
 
     const filterItems = (items) => {
       return items.filter((item) => {
@@ -31,7 +32,7 @@ const SearchResultsPage = () => {
       filteredPastes: filterItems(allPastes),
       filteredBlogs: filterItems(allBlogs),
     };
-  }, [query, allPastes, allBlogs]);
+  }, [debouncedQuery, allPastes, allBlogs]);
 
   const renderItem = (item, type) => (
     <div 
@@ -64,13 +65,8 @@ const SearchResultsPage = () => {
     </div>
   );
 
-  if (!query) {
-    return (
-      <div className={`text-center p-8 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
-        <BackButton />
-        Please enter a search query in the navbar.
-      </div>
-    );
+  if (!debouncedQuery) {
+    // Don't show empty state, just show all data
   }
 
   const noResults = filteredPastes.length === 0 && filteredBlogs.length === 0;
@@ -79,7 +75,7 @@ const SearchResultsPage = () => {
     <div className={`container mx-auto px-4 py-8 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
       <BackButton />
       <h1 className="text-3xl font-bold mb-6">
-        Search Results for: <span className={theme === 'dark' ? 'text-indigo-400' : 'text-indigo-600'}>{query}</span>
+        Search Results for: <span className={theme === 'dark' ? 'text-indigo-400' : 'text-indigo-600'}>{debouncedQuery}</span>
       </h1>
 
       {noResults ? (
@@ -93,7 +89,7 @@ const SearchResultsPage = () => {
                 {filteredPastes.map(paste => renderItem(paste, 'pastes'))}
               </>
             )}
-            {filteredPastes.length === 0 && filteredBlogs.length > 0 && query && (
+            {filteredPastes.length === 0 && filteredBlogs.length > 0 && debouncedQuery && (
                  <p className="text-lg text-center py-4">No pastes found matching your query.</p>
             )}
           </div>
@@ -104,7 +100,7 @@ const SearchResultsPage = () => {
                 {filteredBlogs.map(blog => renderItem(blog, 'blogs'))}
               </>
             )}
-             {filteredBlogs.length === 0 && filteredPastes.length > 0 && query && (
+             {filteredBlogs.length === 0 && filteredPastes.length > 0 && debouncedQuery && (
                  <p className="text-lg text-center py-4">No blogs found matching your query.</p>
             )}
           </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FiEdit, FiTrash2, FiCopy, FiShare2 } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { removeBlogPost } from "../redux/blogSlice";
@@ -23,36 +24,6 @@ const BlogPage = () => {
           tag.toLowerCase().includes(searchTerm.toLowerCase())
         ))
   );
-
-  const handleEdit = (blogId) => {
-    const blogToEdit = blogs.find((b) => b._id === blogId);
-    if (
-      currentUser?.role !== "admin" &&
-      blogToEdit?.userId !== currentUser?.id
-    ) {
-      toast.error("You are not authorized to edit this blog post.");
-      return;
-    }
-    navigate(`/blogs/create?blogId=${blogId}`);
-  };
-
-  const handleView = (blogId) => {
-    navigate(`/blogs/${blogId}`);
-  };
-
-  const handleDelete = (blogId) => {
-    const blogToDelete = blogs.find((b) => b._id === blogId);
-    if (
-      currentUser?.role !== "admin" &&
-      blogToDelete?.userId !== currentUser?.id
-    ) {
-      toast.error("You are not authorized to delete this blog post.");
-      return;
-    }
-    if (window.confirm("Are you sure you want to delete this blog post?")) {
-      dispatch(removeBlogPost(blogId));
-    }
-  };
 
   const handleCopy = async (content) => {
     try {
@@ -89,14 +60,12 @@ const BlogPage = () => {
       <BackButton />
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">All Blog Posts</h1>
-        {currentUser && (
-          <Link
-            to="/blogs/create"
-            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-          >
-            Create New Blog Post
-          </Link>
-        )}
+        <Link
+          to="/blogs/create"
+          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+        >
+          Create New Blog Post
+        </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredData.length > 0 ? (

@@ -1,4 +1,5 @@
 import React from "react";
+import { FiCopy } from "react-icons/fi";
 import { useParams, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -124,9 +125,9 @@ const ViewPaste = () => {
           text-white rounded-md hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-500
           focus:outline-none focus:ring-2
            focus:outline-none focus:ring-2
-            focus:ring-green-500 focus:ring-opacity-500`}
+            focus:ring-green-500 focus:ring-opacity-500 flex items-center gap-1`}
         >
-          Copy Content
+          <FiCopy /> Copy Content
         </button>
       </div>
     </div>
