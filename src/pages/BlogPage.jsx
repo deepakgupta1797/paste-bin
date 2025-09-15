@@ -72,19 +72,19 @@ const BlogPage = () => {
           filteredData.map((blog) => {
             const canEditOrDelete = currentUser && (currentUser.role === "admin" || blog.userId === currentUser.id);
             return (
-              <div key={blog._id} className="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between">
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">{blog.title}</h2>
+              <div key={blog._id} className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 flex flex-col justify-between border border-gray-200 dark:border-gray-700">
+                <h2 className="text-xl font-semibold text-indigo-700 dark:text-indigo-400 mb-2">{blog.title}</h2>
                 {blog.tags && blog.tags.length > 0 && (
                   <div className="mb-2 flex flex-wrap gap-1">
                     {blog.tags.map((tag) => (
-                      <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
+                      <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-gray-800 text-indigo-700 dark:text-gray-200">
                         {tag}
                       </span>
                     ))}
                   </div>
                 )}
-                <p className="text-sm text-gray-700 mb-3 h-20 overflow-hidden text-ellipsis">{blog.content}</p>
-                <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-gray-200">
+                <p className="text-sm text-gray-700 dark:text-gray-300 mb-3 h-20 overflow-hidden text-ellipsis">{blog.content}</p>
+                <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
                   {canEditOrDelete && (
                     <button onClick={() => handleEdit(blog._id)} className="px-3 py-1 text-xs font-medium bg-yellow-500 text-white rounded-md hover:bg-yellow-600">Edit</button>
                   )}
