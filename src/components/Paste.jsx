@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FiEdit, FiTrash2, FiCopy, FiShare2 } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { removeFromPastes } from "../redux/pasteSlice";
@@ -32,36 +33,7 @@ const Paste = () => {
       toast.error("You are not authorized to edit this paste.");
       return;
     }
-          <BackButton />
     navigate(`/pastes/create?pasteId=${pasteId}`);
-  };
-
-  const handleView = (pasteId) => {
-    navigate(`/pastes/${pasteId}`);
-  };
-  const handleDelete = (pasteId) => {
-    const pasteToDelete = pastes.find((p) => p._id === pasteId);
-    if (
-      currentUser?.role !== "admin" &&
-      pasteToDelete?.userId !== currentUser?.id
-    ) {
-      toast.error("You are not authorized to delete this paste.");
-      return;
-    }
-    if (window.confirm("Are you sure you want to delete this paste?")) {
-      dispatch(removeFromPastes(pasteId));
-      toast.success("Paste deleted!");
-    }
-  };
-
-  const handleCopy = async (content) => {
-    try {
-      await navigator.clipboard.writeText(content);
-      toast.success("Copied to clipboard!");
-    } catch (err) {
-      toast.error("Failed to copy content.");
-      console.error("Failed to copy: ", err);
-    }
   };
 
   const handleShare = async (paste) => {
@@ -98,14 +70,7 @@ const Paste = () => {
           Create New Paste
         </button>
       </div>
-      {/* <input
-        className="p-3 rounded-lg border-2 border-gray-300
-         w-full mb-6 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        type="search"
-        placeholder="Search Pastes..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      /> */}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredData.length > 0 ? (
           filteredData.map((paste) => {
@@ -149,45 +114,38 @@ const Paste = () => {
                   )}
                 </div>
                 <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-gray-200">
-                  {canEditOrDelete && (
-                    <button
-                      onClick={() => handleEdit(paste?._id)}
-                      className="px-3 py-1 text-xs font-medium 
-                      bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors"
-                    >
-                      Edit
-                    </button>
-                  )}
+                  <button
+                    onClick={() => handleEdit(paste?._id)}
+                    className={`px-3 py-1 text-xs font-medium bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors flex items-center gap-1 ${canEditOrDelete ? "" : "opacity-50 cursor-not-allowed"}`}
+                    disabled={!canEditOrDelete}
+                  >
+                    <FiEdit /> Edit
+                  </button>
                   <button
                     onClick={() => handleView(paste?._id)}
-                    className="px-3 py-1 text-xs font-medium bg-blue-500 
-                    text-white rounded-md hover:bg-blue-600 transition-colors"
+                    className="px-3 py-1 text-xs font-medium bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors flex items-center gap-1"
                   >
                     View
                   </button>
                   <button
                     onClick={() => handleCopy(paste?.content)}
-                    className="px-3 py-1 text-xs font-medium bg-green-500
-                     text-white rounded-md hover:bg-green-600 transition-colors"
+                    className="px-3 py-1 text-xs font-medium bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center gap-1"
                   >
-                    Copy
+                    <FiCopy /> Copy
                   </button>
                   <button
                     onClick={() => handleShare(paste)}
-                    className="px-3 py-1 text-xs font-medium bg-purple-500 
-                    text-white rounded-md hover:bg-purple-600 transition-colors"
+                    className="px-3 py-1 text-xs font-medium bg-purple-500 text-white rounded-md hover:bg-purple-600 transition-colors flex items-center gap-1"
                   >
-                    Share
+                    <FiShare2 /> Share
                   </button>
-                  {canEditOrDelete && (
-                    <button
-                      onClick={() => handleDelete(paste?._id)}
-                      className="px-3 py-1 text-xs font-medium bg-red-500
-                       text-white rounded-md hover:bg-red-600 transition-colors"
-                    >
-                      Delete
-                    </button>
-                  )}
+                  <button
+                    onClick={() => handleDelete(paste?._id)}
+                    className={`px-3 py-1 text-xs font-medium bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center gap-1 ${canEditOrDelete ? "" : "opacity-50 cursor-not-allowed"}`}
+                    disabled={!canEditOrDelete}
+                  >
+                    <FiTrash2 /> Delete
+                  </button>
                 </div>
               </div>
             );

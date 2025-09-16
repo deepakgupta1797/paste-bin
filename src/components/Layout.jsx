@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import BackButton from './BackButton';
 import Navbar from './Navbar';
 import { Outlet } from 'react-router-dom';
 
@@ -34,9 +33,9 @@ const Layout = () => {
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-neutral-900 text-slate-900 dark:text-slate-100 transition-colors duration-300">
-        <Navbar /> {/* Navbar can now use useTheme() hook */}
+        <Navbar />
         <main className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-8">
-          <Outlet /> {/* Pages rendered here can also use useTheme() */}
+          <Outlet />
         </main>
       </div>
     </ThemeContext.Provider>
