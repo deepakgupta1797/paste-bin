@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 const initialState = {
-  blogs: localStorage.getItem('blogs')
-    ? JSON.parse(localStorage.getItem('blogs'))
-    : [],
+  blogs: [],
 };
 
 export const blogSlice = createSlice({
@@ -14,7 +13,6 @@ export const blogSlice = createSlice({
     addBlogPost: (state, action) => {
       const blogPost = action.payload;
       state.blogs.push(blogPost);
-      localStorage.setItem('blogs', JSON.stringify(state.blogs));
       toast.success('Blog post added successfully!', {
         position: 'top-right',
         duration: 2000,
@@ -26,7 +24,6 @@ export const blogSlice = createSlice({
 
       if (index >= 0) {
         state.blogs[index] = blogPost;
-        localStorage.setItem('blogs', JSON.stringify(state.blogs));
         toast.success('Blog post updated successfully!', {
           position: 'top-right',
           duration: 2000,
@@ -38,7 +35,6 @@ export const blogSlice = createSlice({
       const index = state.blogs.findIndex(b => b._id === blogId);
       if (index >= 0) {
         state.blogs.splice(index, 1);
-        localStorage.setItem('blogs', JSON.stringify(state.blogs));
         toast.success('Blog post removed successfully!', {
           position: 'top-right',
           duration: 2000,
@@ -47,12 +43,34 @@ export const blogSlice = createSlice({
     },
     resetAllBlogPosts: (state) => {
       state.blogs = [];
-      localStorage.removeItem('blogs');
+    },
+    setBlogs: (state, action) => {
+      state.blogs = action.payload;
     },
   },
 });
 
-export const { addBlogPost, updateBlogPost, removeBlogPost, resetAllBlogPosts } 
+export const { addBlogPost, updateBlogPost, removeBlogPost, resetAllBlogPosts, setBlogs } 
 = blogSlice.actions;
 
 export default blogSlice.reducer;
+
+export const fetchBlogs = () => async (dispatch) => {
+  const response = await axios.get('http://localhost:5000/api/blogs');
+  dispatch(setBlogs(response.data));
+};
+
+export const addBlog = (blog) => async (dispatch) => {
+  const response = await axios.post('http://localhost:5000/api/blogs', blog);
+  dispatch(addBlogPost(response.data));
+};
+
+export const updateBlog = (blog) => async (dispatch) => {
+  const response = await axios.put(`http://localhost:5000/api/blogs/${blog._id}`, blog);
+  dispatch(updateBlogPost(response.data));
+};
+
+export const deleteBlog = (blogId) => async (dispatch) => {
+  await axios.delete(`http://localhost:5000/api/blogs/${blogId}`);
+  dispatch(removeBlogPost(blogId));
+};

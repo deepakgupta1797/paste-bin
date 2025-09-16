@@ -56,19 +56,19 @@ const ViewPaste = () => {
   }
 
   return (
-   <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-xl max-w-3xl mx-auto">
+  <div className="bg-white dark:bg-gray-900 p-6 md:p-8 rounded-lg shadow-xl max-w-3xl mx-auto border border-gray-200 dark:border-gray-700">
     <BackButton />
       <div className="mb-8">
         <label
           htmlFor="view-title"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          className="block text-sm font-medium text-indigo-700 dark:text-indigo-400 mb-1"
           >
           Title
         </label>
         <input
           id="view-title"
           className={`p-3 rounded-lg border-2
-            border-gray-300 dark:border-gray-600 w-full bg-gray-100 dark:bg-gray-700 dark:text-gray-300 cursor-not-allowed`}
+            border-gray-300 dark:border-gray-600 w-full bg-gray-100 dark:bg-gray-800 dark:text-gray-200 cursor-not-allowed`}
           type="text"
           value={paste.title || ""}
           disabled
@@ -76,7 +76,7 @@ const ViewPaste = () => {
         />
       </div>
 
-      <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+  <p className="text-xs text-gray-500 dark:text-gray-300 mb-2">
         Created: {new Date(paste.createdAt).toLocaleString()}
         {paste.userId && (
           <span className="ml-2">
@@ -86,15 +86,14 @@ const ViewPaste = () => {
       </p>
       {paste.tags && paste.tags.length > 0 && (
         <div className="mb-4 flex flex-wrap gap-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300"
+          <span className="text-sm font-medium text-indigo-700 dark:text-indigo-400"
           >
             Tags:
             </span>
           {paste.tags.map((tag) => (
             <span
               key={tag}
-              className="text-sm bg-indigo-100 text-indigo-700
-              px-2.5 py-0.5 rounded-full"
+              className="text-sm bg-indigo-100 dark:bg-gray-800 text-indigo-700 dark:text-gray-200 px-2.5 py-0.5 rounded-full"
             >
               {tag}
             </span>
@@ -104,14 +103,14 @@ const ViewPaste = () => {
       <div className="mb-8">
         <label
           htmlFor="view-content"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-indigo-700 dark:text-indigo-400 mb-1"
         >
           Content
         </label>
         <textarea
           id="view-content"
          className={`rounded-lg border-2 border-gray-300 dark:border-gray-600 w-full 
-          p-3 bg-gray-100 dark:bg-gray-700 dark:text-gray-300 cursor-not-allowed`}
+          p-3 bg-gray-100 dark:bg-gray-800 dark:text-gray-200 cursor-not-allowed`}
           value={paste.content}
           disabled
           readOnly

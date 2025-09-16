@@ -36,13 +36,13 @@ const ViewBlogPostPage = () => {
   }
 
   return (
-    <article className="bg-white p-6 md:p-8 rounded-lg shadow-xl max-w-4xl mx-auto">
+  <article className="bg-white dark:bg-gray-900 p-6 md:p-8 rounded-lg shadow-xl max-w-4xl mx-auto border border-gray-200 dark:border-gray-700">
       <BackButton />
-      <header className="mb-8 border-b pb-4">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+  <header className="mb-8 border-b pb-4 border-gray-200 dark:border-gray-700">
+        <h1 className="text-3xl md:text-4xl font-bold text-indigo-700 dark:text-indigo-400 mb-3">
           {blogPost.title || 'Untitled Blog Post'}
         </h1>
-        <p className="text-sm text-gray-500">
+  <p className="text-sm text-gray-500 dark:text-gray-300">
           Published on: {new Date(blogPost.createdAt).toLocaleDateString()}
           {blogPost.userId && <span className="ml-2">by UserID: {blogPost.userId.slice(0,6)}...</span>}
           {blogPost.updatedAt && blogPost.updatedAt !== blogPost.createdAt && <span className="ml-2 italic">(Last updated: {new Date(blogPost.updatedAt).toLocaleDateString()})</span>}
@@ -51,13 +51,12 @@ const ViewBlogPostPage = () => {
 
       {blogPost.tags && blogPost.tags.length > 0 && (
         <div className="mb-6 flex flex-wrap items-center gap-2">
-          <span className="text-md font-semibold text-gray-800">
+          <span className="text-md font-semibold text-indigo-700 dark:text-indigo-400">
             Tags:
             </span>
           {blogPost.tags.map(tag => (
             <span key={tag} 
-            className="text-sm bg-indigo-100 text-indigo-700
-             px-3 py-1 rounded-full shadow-sm">
+            className="text-sm bg-indigo-100 dark:bg-gray-800 text-indigo-700 dark:text-gray-200 px-3 py-1 rounded-full shadow-sm">
               {tag}
               </span>
           ))}
@@ -65,8 +64,8 @@ const ViewBlogPostPage = () => {
       )}
       
       
-      <div className="prose prose-indigo lg:prose-xl max-w-none mb-8"
-       dangerouslySetInnerHTML={{ __html: blogPost.content.replace(/\n/g, '<br />') }} />
+  <div className="prose prose-indigo lg:prose-xl max-w-none mb-8 dark:prose-invert"
+   dangerouslySetInnerHTML={{ __html: blogPost.content.replace(/\n/g, '<br />') }} />
       
       <div className="flex justify-end pt-4 border-t">
           <button 

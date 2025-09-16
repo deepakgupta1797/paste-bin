@@ -36,6 +36,10 @@ const Paste = () => {
     navigate(`/pastes/create?pasteId=${pasteId}`);
   };
 
+  const handleView = (pasteId) => {
+    navigate(`/pastes/${pasteId}`);
+  };
+
   const handleShare = async (paste) => {
     if (navigator.share) {
       try {
@@ -80,18 +84,18 @@ const Paste = () => {
             return (
               <div
                 key={paste?._id}
-                className="bg-white border border-gray-200
+                className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700
                p-4 rounded-lg shadow-md hover:shadow-lg 
                transition-shadow duration-300 flex flex-col justify-between"
               >
                 <div>
                   <h3
-                    className="text-xl font-semibold text-indigo-700 mb-2 truncate"
+                    className="text-xl font-semibold text-indigo-700 dark:text-indigo-400 mb-2 truncate"
                     title={paste.title}
                   >
                     {paste.title}
                   </h3>
-                  <p className="text-xs text-gray-500 mb-1">
+                  <p className="text-xs text-gray-500 dark:text-gray-300 mb-1">
                     Created: {new Date(paste.createdAt).toLocaleDateString()}
                     {paste.userId && (
                       <span className="ml-2">
@@ -104,8 +108,7 @@ const Paste = () => {
                       {paste.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="text-xs bg-gray-200 text-gray-700
-                         px-2 py-0.5 rounded-full"
+                          className="text-xs bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-2 py-0.5 rounded-full"
                         >
                           {tag}
                         </span>
@@ -113,7 +116,7 @@ const Paste = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-gray-200">
+                <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
                   <button
                     onClick={() => handleEdit(paste?._id)}
                     className={`px-3 py-1 text-xs font-medium bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors flex items-center gap-1 ${canEditOrDelete ? "" : "opacity-50 cursor-not-allowed"}`}

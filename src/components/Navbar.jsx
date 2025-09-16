@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { HiOutlineSearch } from 'react-icons/hi';
 import { FiSun, FiMoon, FiMenu, FiX } from 'react-icons/fi';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   logoutUser,
@@ -77,57 +77,63 @@ const Navbar = () => {
                 PasteBin
               </Link>
             </div>
-            <div className="hidden lg:ml-6 lg:flex lg:space-x-2">
-              {" "}
-              {/* Main nav links for larger screens */}
-              <Link
+            <div className="flex items-center space-x-2 ml-6">
+              <NavLink
                 to="/"
-                className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
-                onClick={handleMobileLinkClick}
+                className={({ isActive }) =>
+                  `font-semibold px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-gray-800 transition-colors ${
+                    isActive ? "text-indigo-600 dark:text-indigo-400" : "text-gray-700 dark:text-gray-200"
+                  }`
+                }
               >
                 Home
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to="/pastes"
-                className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
-                onClick={handleMobileLinkClick}
+                className={({ isActive }) =>
+                  `font-semibold px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-gray-800 transition-colors ${
+                    isActive ? "text-indigo-600 dark:text-indigo-400" : "text-gray-700 dark:text-gray-200"
+                  }`
+                }
               >
                 Pastes
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to="/blogs"
+                className={({ isActive }) =>
+                  `font-semibold px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-gray-800 transition-colors ${
+                    isActive ? "text-indigo-600 dark:text-indigo-400" : "text-gray-700 dark:text-gray-200"
+                  }`
+                }
+              >
+                Blogs
+              </NavLink>
+              <NavLink
+                to="/chats"
+                className={({ isActive }) =>
+                  `font-semibold px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-gray-800 transition-colors ${
+                    isActive ? "text-indigo-600 dark:text-indigo-400" : "text-gray-700 dark:text-gray-200"
+                  }`
+                }
+              >
+                Chats
+              </NavLink>
+              {currentUser?.role === "admin" && (
+                <Link
+                  to="/admin"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
+                  onClick={handleMobileLinkClick}
+                >
+                  Admin
+                </Link>
+              )}
+              <Link
+                to="/account"
                 className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
                 onClick={handleMobileLinkClick}
               >
-                Blogs
+                Account
               </Link>
-              {isAuthenticated && (
-                <>
-                  {/* <Link
-                    to="/pastes/create"
-                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
-                    onClick={handleMobileLinkClick}
-                  >
-                    New Paste
-                  </Link> */}
-                  {currentUser?.role === "admin" && (
-                    <Link
-                      to="/admin"
-                      className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
-                      onClick={handleMobileLinkClick}
-                    >
-                      Admin
-                    </Link>
-                  )}
-                  <Link
-                    to="/account"
-                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
-                    onClick={handleMobileLinkClick}
-                  >
-                    Account
-                  </Link>
-                </>
-              )}
             </div>
           </div>
 
@@ -239,6 +245,13 @@ const Navbar = () => {
               onClick={handleMobileLinkClick}
             >
               All Blogs
+            </Link>
+            <Link
+              to="/chats"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
+              onClick={handleMobileLinkClick}
+            >
+              Chats
             </Link>
             {isAuthenticated ? (
               <>
