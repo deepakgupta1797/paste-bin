@@ -3,7 +3,7 @@ export const deleteChatRoomAsync = (roomId) => async (dispatch) => {
   try {
     await axios.delete(`${API_URL}/api/chat-rooms/${roomId}`);
     // Remove all chats from this room in Redux state
-    dispatch(setChats((prev) => prev.filter(chat => chat.roomId !== roomId)));
+    dispatch(deleteChatRoom(roomId));
     // Optionally, you can also dispatch a toast here
   } catch (error) {
     console.error('Failed to delete chat room:', error);
@@ -35,6 +35,9 @@ const chatSlice = createSlice({
     deleteChat: (state, action) => {
       state.chats = state.chats.filter(chat => chat._id !== action.payload);
     },
+    deleteChatRoom: (state, action) => {
+      state.chats = state.chats.filter(chat => chat.roomId !== action.payload);
+    },
     setChats: (state, action) => {
       state.chats = action.payload;
     },
@@ -44,7 +47,7 @@ const chatSlice = createSlice({
   },
 });
 
-export const { addChat, updateChat, deleteChat, setChats, setCurrentRoom } = chatSlice.actions;
+export const { addChat, updateChat, deleteChat, deleteChatRoom, setChats, setCurrentRoom } = chatSlice.actions;
 export default chatSlice.reducer;
 
 const API_URL = import.meta.env.VITE_API_URL;

@@ -7,8 +7,8 @@ import BackButton from "../components/BackButton";
 
 const ChatsPage = () => {
   const dispatch = useDispatch();
-  const chats = useSelector((state) => state.chat.chats) || [];
-  const currentRoom = useSelector((state) => state.chat.currentRoom);
+  const chats = useSelector((state) => state.chat?.chats || []);
+  const currentRoom = useSelector((state) => state.chat?.currentRoom || 'general');
   const currentUser = useSelector(selectCurrentUser);
   const [message, setMessage] = useState("");
   const [newRoomName, setNewRoomName] = useState("");
@@ -29,6 +29,7 @@ const ChatsPage = () => {
 
   // Get unique room names including custom rooms
   const availableRooms = useMemo(() => {
+    if (!Array.isArray(chats)) return ['general'];
     const rooms = new Set(chats.map(chat => chat.roomId).filter(Boolean));
     rooms.add('general'); // Always include general room
     
@@ -40,6 +41,7 @@ const ChatsPage = () => {
 
   // Filter chats for current room
   const roomChats = useMemo(() => {
+    if (!Array.isArray(chats)) return [];
     return chats
       .filter(chat => chat.roomId === currentRoom)
       .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
