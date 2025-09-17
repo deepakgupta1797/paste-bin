@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useNavigate, Link } from "react-router-dom";
-import { registerUser } from "../redux/authSlice";
+import toast from "react-hot-toast";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import BackButton from "../components/BackButton";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const SignupPage = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -46,20 +43,26 @@ const SignupPage = () => {
     setSubmitting(true);
     setStatus(undefined);
     try {
-      const resultAction = await dispatch(
-        registerUser({
+      // Send signup data to backend
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           username: values.username,
           password: values.password,
-          role: "user", // Always register as user
+          role: values.role,
           name: values.name,
-        })
-      );
-
-      unwrapResult(resultAction);
+          email: values.emailid,
+        }),
+      });
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Registration failed");
+      }
+      toast.success("Registration successful! Please log in.");
       navigate("/login");
     } catch (error) {
-      console.error("Failed to register user:", error);
-
+      toast.error(error.message || "Registration failed. Please try again.");
       setStatus({
         error: error.message || "Registration failed. Please try again.",
       });

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../redux/authSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -31,7 +30,7 @@ const LoginPage = () => {
     setSubmitting(true);
     setStatus(undefined);
     try {
-      // Call backend login API
+      // Call backend login API with both username and email fields
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/login`,
         {
@@ -39,6 +38,7 @@ const LoginPage = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             username: values.username,
+            email: values.username, // send as both username and email
             password: values.password,
           }),
         }

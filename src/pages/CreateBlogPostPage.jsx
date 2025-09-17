@@ -231,8 +231,12 @@ const CreateBlogPostPage = () => {
               </FieldArray>
               <ErrorMessage
                 name="tags"
-                component="div"
-                className="text-red-500 text-sm mt-1"
+                render={msg => {
+                  if (typeof msg === 'string') return <div className="text-red-500 text-sm mt-1">{msg}</div>;
+                  if (Array.isArray(msg)) return msg.map((m, i) => typeof m === 'string' ? <div key={i} className="text-red-500 text-sm mt-1">{m}</div> : null);
+                  if (msg && typeof msg === 'object') return <div className="text-red-500 text-sm mt-1">{JSON.stringify(msg)}</div>;
+                  return null;
+                }}
               />
             </div>
             <div>

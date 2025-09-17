@@ -1,3 +1,15 @@
+// Delete all chats in a room (delete chat room)
+export const deleteChatRoomAsync = (roomId) => async (dispatch) => {
+  try {
+    await axios.delete(`${API_URL}/api/chat-rooms/${roomId}`);
+    // Remove all chats from this room in Redux state
+    dispatch(setChats((prev) => prev.filter(chat => chat.roomId !== roomId)));
+    // Optionally, you can also dispatch a toast here
+  } catch (error) {
+    console.error('Failed to delete chat room:', error);
+    // Optionally dispatch an error action or show a toast
+  }
+};
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
