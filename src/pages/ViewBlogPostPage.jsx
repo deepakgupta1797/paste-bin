@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom'; 
 import { useSelector } from 'react-redux';
+import { FiCopy } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import BackButton from '../components/BackButton';
 
@@ -67,7 +68,7 @@ const ViewBlogPostPage = () => {
   <div className="prose prose-indigo lg:prose-xl max-w-none mb-8 dark:prose-invert"
    dangerouslySetInnerHTML={{ __html: blogPost.content.replace(/\n/g, '<br />') }} />
       
-      <div className="flex justify-end pt-4 border-t">
+      <div className="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
           <button 
           onClick={handleCopyContent}
            className="px-4 py-2 bg-green-500 text-white rounded-md

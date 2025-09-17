@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import BackButton from "../components/BackButton";
 
 const BlogPage = () => {
-  const blogs = useSelector((state) => state.blog.blogs);
+  const blogs = useSelector((state) => state.blog.blogs) || [];
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
@@ -17,12 +17,15 @@ const BlogPage = () => {
 
   const filteredData = blogs.filter(
     (blog) =>
-      blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog &&
+      blog.title &&
+      blog.content &&
+      (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (blog.tags &&
         blog.tags.some((tag) =>
-          tag.toLowerCase().includes(searchTerm.toLowerCase())
-        ))
+          tag && tag.toLowerCase().includes(searchTerm.toLowerCase())
+        )))
   );
 
   const handleCopy = async (content) => {
@@ -32,6 +35,21 @@ const BlogPage = () => {
     } catch (err) {
       toast.error("Failed to copy content.");
       console.error("Failed to copy: ", err);
+    }
+  };
+
+  const handleView = (blogId) => {
+    navigate(`/blogs/${blogId}`);
+  };
+
+  const handleEdit = (blogId) => {
+    navigate(`/blogs/edit/${blogId}`);
+  };
+
+  const handleDelete = (blogId) => {
+    if (window.confirm("Are you sure you want to delete this blog post?")) {
+      dispatch(removeBlogPost(blogId));
+      toast.success("Blog post deleted successfully!");
     }
   };
 

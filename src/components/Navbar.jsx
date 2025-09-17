@@ -72,9 +72,14 @@ const Navbar = () => {
             <div className="flex-shrink-0">
               <Link
                 to="/"
-                className="text-xl font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-300"
+                className="flex items-center space-x-2 text-xl font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-300"
               >
-                PasteBin
+                <img 
+                  src="/logo.png" 
+                  alt="PasteBin Logo" 
+                  className="w-8 h-8 object-contain"
+                />
+                <span>PasteBin</span>
               </Link>
             </div>
             <div className="flex items-center space-x-2 ml-6">

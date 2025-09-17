@@ -1,7 +1,6 @@
-import Chats from "../pages/Chats";
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { addToPastes, updateToPastes } from "../redux/pasteSlice";
+import { addPaste, updatePaste } from "../redux/pasteSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser, selectIsAuthenticated } from "../redux/authSlice";
 import toast from "react-hot-toast";
@@ -108,11 +107,11 @@ const Home = () => {
         toast.error("You are not authorized to update this paste.");
         return;
       }
-      dispatch(updateToPastes({ ...values, tags: processedTags, id: pasteId }));
+      dispatch(updatePaste({ ...values, tags: processedTags, _id: pasteId }));
       toast.success("Paste updated successfully.");
     } else {
       dispatch(
-        addToPastes({ ...values, tags: processedTags, userId: currentUser.id })
+        addPaste({ ...values, tags: processedTags, userId: currentUser.id })
       );
       toast.success("Paste created successfully.");
     }
@@ -254,21 +253,6 @@ const Home = () => {
             </Form>
           )}
         </Formik>
-      </div>
-      {/* Render all pastes with chats below each */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {allPastes.length > 0 ? (
-            allPastes.map((paste) => (
-              <div key={paste._id}>
-                {/* ...existing paste card rendering... */}
-                <Chats blogId={paste._id} />
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-500 py-4">No pastes found.</p>
-          )}
-        </div>
       </div>
     </div>
   );

@@ -57,22 +57,44 @@ export const { addToPastes, updateToPastes, resetAllPaste, removeFromPastes, set
 
 export default pasteSlice.reducer
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const fetchPastes = () => async (dispatch) => {
-  const response = await axios.get('http://localhost:5000/api/pastes');
-  dispatch(setPastes(response.data));
+  try {
+    const response = await axios.get(`${API_URL}/api/pastes`);
+    dispatch(setPastes(response.data));
+  } catch (error) {
+    console.error('Failed to fetch pastes:', error);
+    // Optionally dispatch an error action or show a toast
+  }
 };
 
 export const addPaste = (paste) => async (dispatch) => {
-  const response = await axios.post('http://localhost:5000/api/pastes', paste);
-  dispatch(addToPastes(response.data));
+  try {
+    const response = await axios.post(`${API_URL}/api/pastes`, paste);
+    dispatch(addToPastes(response.data));
+  } catch (error) {
+    console.error('Failed to add paste:', error);
+    // Optionally dispatch an error action or show a toast
+  }
 };
 
 export const updatePaste = (paste) => async (dispatch) => {
-  const response = await axios.put(`http://localhost:5000/api/pastes/${paste._id}`, paste);
-  dispatch(updateToPastes(response.data));
+  try {
+    const response = await axios.put(`${API_URL}/api/pastes/${paste._id}`, paste);
+    dispatch(updateToPastes(response.data));
+  } catch (error) {
+    console.error('Failed to update paste:', error);
+    // Optionally dispatch an error action or show a toast
+  }
 };
 
 export const deletePaste = (pasteId) => async (dispatch) => {
-  await axios.delete(`http://localhost:5000/api/pastes/${pasteId}`);
-  dispatch(removeFromPastes(pasteId));
+  try {
+    await axios.delete(`${API_URL}/api/pastes/${pasteId}`);
+    dispatch(removeFromPastes(pasteId));
+  } catch (error) {
+    console.error('Failed to delete paste:', error);
+    // Optionally dispatch an error action or show a toast
+  }
 };

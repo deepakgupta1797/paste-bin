@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { FiEdit, FiTrash2, FiCopy, FiShare2 } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { removeFromPastes } from "../redux/pasteSlice";
+import { deletePaste } from "../redux/pasteSlice";
 import toast from "react-hot-toast";
 import { selectCurrentUser } from "../redux/authSlice";
 import BackButton from "./BackButton";
 
 const Paste = () => {
-  const pastes = useSelector((state) => state.paste.pastes);
+  const pastes = useSelector((state) => state.paste.pastes) || [];
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
@@ -16,13 +16,39 @@ const Paste = () => {
   const currentUser = useSelector(selectCurrentUser);
   const filteredData = pastes.filter(
     (paste) =>
-      paste.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      paste &&
+      paste.title &&
+      paste.content &&
+      (paste.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       paste.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (paste.tags &&
         paste.tags.some((tag) =>
-          tag.toLowerCase().includes(searchTerm.toLowerCase())
-        ))
+          tag && tag.toLowerCase().includes(searchTerm.toLowerCase())
+        )))
   );
+
+  const handleDelete = (pasteId) => {
+    const pasteToDelete = pastes.find((p) => p._id === pasteId);
+    if (
+      currentUser?.role !== "admin" &&
+      pasteToDelete?.userId !== currentUser?.id
+    ) {
+      toast.error("You are not authorized to delete this paste.");
+      return;
+    }
+    if (window.confirm("Are you sure you want to delete this paste?")) {
+      dispatch(deletePaste(pasteId));
+    }
+  };
+
+  const handleCopy = async (content) => {
+    try {
+      await navigator.clipboard.writeText(content);
+      toast.success("Content copied to clipboard!");
+    } catch (err) {
+      toast.error("Failed to copy content.");
+    }
+  };
 
   const handleEdit = (pasteId) => {
     const pasteToEdit = pastes.find((p) => p._id === pasteId);
