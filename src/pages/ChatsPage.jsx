@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addChatAsync, deleteChatAsync, setCurrentRoom, fetchChats } from "../redux/chatSlice";
+import { addChatAsync, deleteChatAsync, setCurrentRoom, fetchChats, deleteChatRoomAsync } from "../redux/chatSlice";
 import { selectCurrentUser } from "../redux/authSlice";
 import { FiTrash2, FiSend, FiUsers, FiCornerUpLeft } from "react-icons/fi";
 import BackButton from "../components/BackButton";
@@ -159,28 +159,38 @@ const ChatsPage = () => {
                 {availableRooms.map((room) => {
                   const roomMessageCount = chats.filter(chat => chat.roomId === room).length;
                   return (
-                    <button
-                      key={room}
-                      onClick={() => handleRoomChange(room)}
-                      className={`w-full text-left p-3 rounded-lg text-sm transition-all duration-200 border ${
-                        currentRoom === room
-                          ? 'bg-indigo-600 text-white border-indigo-600 shadow-md'
-                          : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-500'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-lg">#</span>
-                        <span className="font-medium">{room}</span>
-                        {currentRoom === room && (
-                          <span className="ml-auto text-xs bg-white bg-opacity-20 px-2 py-1 rounded">
-                            Active
-                          </span>
-                        )}
-                      </div>
-                      <div className="text-xs opacity-75">
-                        {roomMessageCount} {roomMessageCount === 1 ? 'message' : 'messages'}
-                      </div>
-                    </button>
+                    <div key={room} className="flex items-center gap-2 mb-2">
+                      <button
+                        onClick={() => handleRoomChange(room)}
+                        className={`flex-1 text-left p-3 rounded-lg text-sm transition-all duration-200 border ${
+                          currentRoom === room
+                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-md'
+                            : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-500'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-lg">#</span>
+                          <span className="font-medium">{room}</span>
+                          {currentRoom === room && (
+                            <span className="ml-auto text-xs bg-white bg-opacity-20 px-2 py-1 rounded">
+                              Active
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs opacity-75">
+                          {roomMessageCount} {roomMessageCount === 1 ? 'message' : 'messages'}
+                        </div>
+                      </button>
+                      {currentUser && currentUser.role === 'admin' && room !== 'general' && (
+                        <button
+                          onClick={() => dispatch(deleteChatRoomAsync(room))}
+                          className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900 rounded-full transition-colors"
+                          title="Delete room"
+                        >
+                          <FiTrash2 size={16} />
+                        </button>
+                      )}
+                    </div>
                   );
                 })}
               </div>

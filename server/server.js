@@ -1,3 +1,13 @@
+// Delete all chats in a room (delete chat room)
+app.delete('/api/chat-rooms/:roomId', async (req, res) => {
+  try {
+    const { roomId } = req.params;
+    await Chat.deleteMany({ roomId });
+    res.json({ message: `Room '${roomId}' and its messages deleted.` });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -121,15 +131,23 @@ app.post('/api/users', async (req, res) => {
 // User login route
 app.post('/api/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
-    // Find user by username
-    const user = await User.findOne({ username });
+    const { username, email, password } = req.body;
+    // Find user by username or email
+    const user = await User.findOne({
+      $or: [
+        { username: username },
+        { email: email },
+        // Also allow login if username field is actually an email
+        { username: email },
+        { email: username }
+      ]
+    });
     if (!user) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).json({ error: 'Invalid username/email or password' });
     }
     // For demo: compare plain text passwords (replace with hash check in production)
     if (user.password !== password) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).json({ error: 'Invalid username/email or password' });
     }
     // Return user info (never return password)
     res.json({
