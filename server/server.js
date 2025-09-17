@@ -1,13 +1,3 @@
-// Delete all chats in a room (delete chat room)
-app.delete('/api/chat-rooms/:roomId', async (req, res) => {
-  try {
-    const { roomId } = req.params;
-    await Chat.deleteMany({ roomId });
-    res.json({ message: `Room '${roomId}' and its messages deleted.` });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -17,6 +7,8 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+
 
 // Replace with your actual MongoDB Atlas connection string
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -245,6 +237,17 @@ app.delete('/api/chats/:id', async (req, res) => {
   try {
     await Chat.findByIdAndDelete(req.params.id);
     res.json({ message: 'Chat deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete all chats in a room (delete chat room)
+app.delete('/api/chat-rooms/:roomId', async (req, res) => {
+  try {
+    const { roomId } = req.params;
+    await Chat.deleteMany({ roomId });
+    res.json({ message: `Room '${roomId}' and its messages deleted.` });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
