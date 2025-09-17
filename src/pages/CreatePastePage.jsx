@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { addToPastes, updateToPastes } from "../redux/pasteSlice";
+import { addPaste, updatePaste } from "../redux/pasteSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser, selectIsAuthenticated } from "../redux/authSlice";
 import toast from "react-hot-toast";
@@ -117,18 +117,16 @@ const CreatePastePage = () => {
         userId: existingPaste?.userId || currentUser?.id,
         tags: processedTags,
       };
-      dispatch(updateToPastes(updatedPasteData));
+      dispatch(updatePaste(updatedPasteData));
       toast.success("Paste updated successfully!");
     } else {
       const newPasteData = {
         title: values.title,
         content: values.content,
-        _id: Date.now().toString(36) + Math.random().toString(36).substring(2),
-        createdAt: new Date().toISOString(),
         userId: currentUser?.id,
         tags: processedTags,
       };
-      dispatch(addToPastes(newPasteData));
+      dispatch(addPaste(newPasteData));
       toast.success("Paste created successfully!");
     }
     resetForm();

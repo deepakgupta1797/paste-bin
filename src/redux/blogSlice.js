@@ -55,22 +55,44 @@ export const { addBlogPost, updateBlogPost, removeBlogPost, resetAllBlogPosts, s
 
 export default blogSlice.reducer;
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const fetchBlogs = () => async (dispatch) => {
-  const response = await axios.get('http://localhost:5000/api/blogs');
-  dispatch(setBlogs(response.data));
+  try {
+    const response = await axios.get(`${API_URL}/api/blogs`);
+    dispatch(setBlogs(response.data));
+  } catch (error) {
+    console.error('Failed to fetch blogs:', error);
+    // Optionally dispatch an error action or show a toast
+  }
 };
 
 export const addBlog = (blog) => async (dispatch) => {
-  const response = await axios.post('http://localhost:5000/api/blogs', blog);
-  dispatch(addBlogPost(response.data));
+  try {
+    const response = await axios.post(`${API_URL}/api/blogs`, blog);
+    dispatch(addBlogPost(response.data));
+  } catch (error) {
+    console.error('Failed to add blog:', error);
+    // Optionally dispatch an error action or show a toast
+  }
 };
 
 export const updateBlog = (blog) => async (dispatch) => {
-  const response = await axios.put(`http://localhost:5000/api/blogs/${blog._id}`, blog);
-  dispatch(updateBlogPost(response.data));
+  try {
+    const response = await axios.put(`${API_URL}/api/blogs/${blog._id}`, blog);
+    dispatch(updateBlogPost(response.data));
+  } catch (error) {
+    console.error('Failed to update blog:', error);
+    // Optionally dispatch an error action or show a toast
+  }
 };
 
 export const deleteBlog = (blogId) => async (dispatch) => {
-  await axios.delete(`http://localhost:5000/api/blogs/${blogId}`);
-  dispatch(removeBlogPost(blogId));
+  try {
+    await axios.delete(`${API_URL}/api/blogs/${blogId}`);
+    dispatch(removeBlogPost(blogId));
+  } catch (error) {
+    console.error('Failed to delete blog:', error);
+    // Optionally dispatch an error action or show a toast
+  }
 };

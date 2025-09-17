@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addBlogPost, updateBlogPost } from "../redux/blogSlice";
+import { addBlog, updateBlog } from "../redux/blogSlice";
 import { selectCurrentUser, selectIsAuthenticated } from "../redux/authSlice";
 import toast from "react-hot-toast";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
@@ -117,17 +117,15 @@ const CreateBlogPostPage = () => {
         userId: existingBlog?.userId || currentUser?.id,
         tags: processedTags,
       };
-      dispatch(updateBlogPost(updatedBlogData));
+      dispatch(updateBlog(updatedBlogData));
     } else {
       const newBlogData = {
         title: values.title,
         content: values.content,
-        _id: Date.now().toString(36) + Math.random().toString(36).substring(2),
-        createdAt: new Date().toISOString(),
-        userId: currentUser?.id,
+        authorId: currentUser?.id,
         tags: processedTags,
       };
-      dispatch(addBlogPost(newBlogData));
+      dispatch(addBlog(newBlogData));
     }
     resetForm();
     setSearchParams({});

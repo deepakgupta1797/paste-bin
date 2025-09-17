@@ -22,7 +22,8 @@ import AccountPage from "./components/AccountPage";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "./redux/authSlice";
 import SearchResultsPage from "./pages/SearchResultsPage";
-import Chats from "./pages/Chats";
+import ChatsPage from "./pages/ChatsPage";
+import User from "./pages/User";
 
 const router = createBrowserRouter([
   {
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
       },
       {
         path: "chats",
-        element: <Chats />,
+        element: <ChatsPage />,
       },
       {
         path: "search",

@@ -143,9 +143,16 @@ const HomePage = () => {
   return (
     <div className={pageContainerClass}>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-          Welcome To PasteBin
-        </h1>
+        <div className="flex items-center space-x-3">
+          <img 
+            src="/logo.png" 
+            alt="PasteBin Logo" 
+            className="w-12 h-12 object-contain"
+          />
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
+            Welcome To PasteBin
+          </h1>
+        </div>
         {isAuthenticated ? (
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-700 dark:text-gray-300">

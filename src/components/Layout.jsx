@@ -1,4 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchPastes } from '../redux/pasteSlice';
+import { fetchBlogs } from '../redux/blogSlice';
+import { fetchChats } from '../redux/chatSlice';
 import Navbar from './Navbar';
 import { Outlet } from 'react-router-dom';
 
@@ -12,6 +16,8 @@ export const ThemeContext = createContext({
 export const useTheme = () => useContext(ThemeContext);
 
 const Layout = () => {
+  const dispatch = useDispatch();
+  
   //  Manage Theme State
   const [theme, setTheme] = useState(() => {
     const storedTheme = localStorage.getItem('theme');
@@ -29,6 +35,13 @@ const Layout = () => {
     root.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  // Fetch data when app loads
+  useEffect(() => {
+    dispatch(fetchPastes());
+    dispatch(fetchBlogs());
+    dispatch(fetchChats());
+  }, [dispatch]);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

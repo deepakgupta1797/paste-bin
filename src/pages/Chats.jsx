@@ -1,15 +1,15 @@
 import React, { useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addChat, deleteChat } from "../redux/chatSlice";
+import { addChatAsync, deleteChatAsync } from "../redux/chatSlice";
 import { selectCurrentUser } from "../redux/authSlice";
 import { FiTrash2 } from "react-icons/fi";
 import BackButton from "../components/BackButton";
 
 const Chats = ({ blogId }) => {
   const dispatch = useDispatch();
-  const chats = useSelector((state) => state.chat.chats);
+  const chats = useSelector((state) => state.chat.chats) || [];
   const filteredChats = useMemo(
-    () => chats.filter((chat) => chat.blogId === blogId),
+    () => blogId ? chats.filter((chat) => chat.blogId === blogId) : chats,
     [chats, blogId]
   );
   const currentUser = useSelector(selectCurrentUser);
@@ -22,14 +22,16 @@ const Chats = ({ blogId }) => {
       alert("You must be logged in to chat.");
       return;
     }
+    if (!blogId) {
+      alert("Chat must be associated with a blog post.");
+      return;
+    }
     dispatch(
-      addChat({
-        id: Date.now().toString(),
+      addChatAsync({
         blogId,
         userId: currentUser.id,
         username: currentUser.username,
         message,
-        createdAt: new Date().toISOString(),
       })
     );
     setMessage("");
@@ -40,7 +42,7 @@ const Chats = ({ blogId }) => {
       currentUser &&
       (currentUser.role === "admin" || currentUser.id === userId)
     ) {
-      dispatch(deleteChat(id));
+      dispatch(deleteChatAsync(id));
     }
   };
 
@@ -50,24 +52,26 @@ const Chats = ({ blogId }) => {
         <BackButton />
       </div>
       <h3 className="text-lg font-semibold text-indigo-700 dark:text-indigo-400 mb-2">
-        Chats
+        {blogId ? "Blog Comments" : "All Chats"}
       </h3>
-      <form onSubmit={handleAddChat} className="flex gap-2 mb-4">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="flex-grow min-w-0 p-2 border rounded dark:bg-gray-800 dark:text-gray-100"
-          placeholder="Type your message..."
-          required
-        />
-        <button
-          type="submit"
-          className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-        >
-          Send
-        </button>
-      </form>
+      {blogId && (
+        <form onSubmit={handleAddChat} className="flex gap-2 mb-4">
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className="flex-grow min-w-0 p-2 border rounded dark:bg-gray-800 dark:text-gray-100"
+            placeholder="Type your message..."
+            required
+          />
+          <button
+            type="submit"
+            className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+          >
+            Send
+          </button>
+        </form>
+      )}
       <div className="space-y-3">
         {filteredChats.length === 0 ? (
           <p className="text-gray-500 dark:text-gray-300">No chats yet.</p>

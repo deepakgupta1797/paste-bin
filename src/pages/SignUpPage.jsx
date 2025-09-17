@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useNavigate, Link } from "react-router-dom";
@@ -6,14 +6,18 @@ import { registerUser } from "../redux/authSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import BackButton from "../components/BackButton";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const SignupPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const initialValues = {
     name: "",
     username: "",
+    emailid: "",
     password: "",
     confirmPassword: "",
     role: "user",
@@ -46,7 +50,7 @@ const SignupPage = () => {
         registerUser({
           username: values.username,
           password: values.password,
-          role: values.role,
+          role: "user", // Always register as user
           name: values.name,
         })
       );
@@ -74,12 +78,19 @@ const SignupPage = () => {
         className={`max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-10 rounded-xl shadow-lg`}
       >
         <div>
-          <h2
-            className={`mt-6 text-center text-3xl
-           font-extrabold text-gray-900 dark:text-gray-100`}
-          >
-            Create your account
-          </h2>
+          <div className="flex flex-col items-center">
+            <img
+              src="/logo.png"
+              alt="PasteBin Logo"
+              className="w-16 h-16 object-contain mb-4"
+            />
+            <h2
+              className={`text-center text-3xl
+             font-extrabold text-gray-900 dark:text-gray-100`}
+            >
+              Create your account
+            </h2>
+          </div>
         </div>
         <Formik
           initialValues={initialValues}
@@ -153,12 +164,22 @@ const SignupPage = () => {
                 >
                   Password
                 </label>
-                <Field
-                  name="password"
-                  type="password"
-                  className={`mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400
-                  rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
-                />
+                <div className="relative">
+                  <Field
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    className={`mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 pr-10`}
+                  />
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-300 focus:outline-none"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
+                </div>
                 <ErrorMessage
                   name="password"
                   component="div"
@@ -172,38 +193,24 @@ const SignupPage = () => {
                 >
                   Confirm Password
                 </label>
-                <Field
-                  name="confirmPassword"
-                  type="password"
-                  className={`mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400
-                    rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
-                />
+                <div className="relative">
+                  <Field
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    className={`mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 pr-10`}
+                  />
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    onClick={() => setShowConfirmPassword((v) => !v)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-300 focus:outline-none"
+                    aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                  >
+                    {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
+                </div>
                 <ErrorMessage
                   name="confirmPassword"
-                  component="div"
-                  className="text-red-500 text-xs mt-1"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="role"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Sign up as:
-                </label>
-                <Field
-                  as="select"
-                  name="role"
-                  className={`mt-1 block w-full pl-3 pr-10 py-2 text-base dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100
-                 border-gray-300 focus:outline-none focus:ring-indigo-500 
-                  focus:border-indigo-500 sm:text-sm rounded-md`}
-                >
-                  <option value="user">User</option>
-
-                  <option value="admin">Admin</option>
-                </Field>
-                <ErrorMessage
-                  name="role"
                   component="div"
                   className="text-red-500 text-xs mt-1"
                 />

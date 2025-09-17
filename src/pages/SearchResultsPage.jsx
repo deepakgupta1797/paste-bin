@@ -8,8 +8,8 @@ const SearchResultsPage = () => {
   const debouncedQuery = searchParams.get('q') || '';
   const { theme } = useTheme();
 
-  const allPastes = useSelector((state) => state.paste.pastes);
-  const allBlogs = useSelector((state) => state.blog.blogs);
+  const allPastes = useSelector((state) => state.paste.pastes) || [];
+  const allBlogs = useSelector((state) => state.blog.blogs) || [];
 
   const { filteredPastes, filteredBlogs } = useMemo(() => {
     if (!debouncedQuery) {
@@ -21,9 +21,10 @@ const SearchResultsPage = () => {
 
     const filterItems = (items) => {
       return items.filter((item) => {
+        if (!item || !item.title || !item.content) return false;
         const titleMatch = item.title.toLowerCase().includes(lowerCaseQuery);
         const contentMatch = item.content.toLowerCase().includes(lowerCaseQuery);
-        const tagsMatch = item.tags && item.tags.some(tag => tag.toLowerCase().includes(lowerCaseQuery));
+        const tagsMatch = item.tags && item.tags.some(tag => tag && tag.toLowerCase().includes(lowerCaseQuery));
         return titleMatch || contentMatch || tagsMatch;
       });
     };

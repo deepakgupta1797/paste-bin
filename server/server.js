@@ -118,6 +118,33 @@ app.post('/api/users', async (req, res) => {
   }
 });
 
+// User login route
+app.post('/api/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    // Find user by username
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+    // For demo: compare plain text passwords (replace with hash check in production)
+    if (user.password !== password) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+    // Return user info (never return password)
+    res.json({
+      id: user._id,
+      username: user.username,
+      name: user.name || user.username,
+      role: user.role,
+      email: user.email || '',
+      createdAt: user.createdAt
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Blogs
 app.get('/api/blogs', async (req, res) => {
   try {
